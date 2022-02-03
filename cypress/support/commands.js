@@ -73,31 +73,43 @@ Cypress.Commands.add('cadastrarUsuario', (nome, email, senha, admin) => {
 })
 
 
-Cypress.Commands.add('deletarUsuario', (id)=>{
-    cy.request({
-        method: 'DELETE',
-        url: `usuarios/${id}`
-    }).then(response => {
-        expect(response.status).to.equal(200)
-    })
+Cypress.Commands.add('deletarUsuario', (numeroUsuario) => {
+    cy.request('usuarios').then(response => {
+        let id = response.body.usuarios[numeroUsuario]._id
 
+
+        cy.request({
+            method: 'DELETE',
+            url: `usuarios/${id}`
+        }).then(response => {
+            expect(response.status).to.equal(200)
+            expect(response.body.message).to.equal('Registro excluído com sucesso')
+        })
+
+    })
 })
 
 
-Cypress.Commands.add('updateUser',(id, nome, email, senha, admin)=>{
+Cypress.Commands.add('updateUser', (numeroUsuario, nome, email, senha, admin) => {
+    cy.request('usuarios').then(response => {
+        let id = response.body.usuarios[numeroUsuario]._id
 
-    cy.request({
-        method: 'PUT',
-        url: `usuarios/${id}`,
-        failOnStatusCode: false,
-        body: {
+        cy.request({
+            method: 'PUT',
+            url: `usuarios/${id}`,
+            failOnStatusCode: false,
+            body: {
 
-             "nome": nome,
-             "email": email,
-             "password": senha,
-             "administrador": admin
+                "nome": nome,
+                "email": email,
+                "password": senha,
+                "administrador": admin
 
-        }
-        
-   })
+            }
+        }).then((response) => {
+            expect(response.status).to.equal(200)
+            expect(response.body.message).to.equal('Registro alterado com sucesso')
+
+        })
+    })
 })

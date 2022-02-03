@@ -58,16 +58,14 @@ describe('Testes da Funcionalidade Usuários', () => {
      });
 
      it('Deve editar um usuário previamente cadastrado', () => {
-          cy.updateUser('pCeEfShM7P0zkgs9', 'jorge', 'jorginho@miao.com.br', 'testetete', 'false')
-               .then((response) => {
-                    expect(response.status).to.equal(200)
-                    expect(response.body.message).to.equal('Registro alterado com sucesso')
-               });
+          //Usa a posição do usuario na lista para recuperar o ID e alterar os dados do usuario
+          cy.updateUser(0, 'jorge', 'testandoalt@miao.com.br', 'testetete', 'false')
+              
      });
 
      it('Deve deletar um usuário previamente cadastrado', () => {
-          //usa um ID para deletar um usuário cadastrado
-          cy.deletarUsuario('ucAtJId8TclWsJ0v')
+          //Usa a posição do usuario na lista para recuperar o ID e deletar o usuario
+          cy.deletarUsuario(0)
 
      });
 
